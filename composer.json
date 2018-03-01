@@ -13,6 +13,8 @@
         }
     ],
     "autoload": {
-        "Ronanchilvers\\Container\\": "src"
+        "psr-4": {
+            "Ronanchilvers\\Container\\": "src"
+        }
     }
 }
