@@ -14,7 +14,7 @@
     ],
     "autoload": {
         "psr-4": {
-            "Ronanchilvers\\": "src"
+            "Ronanchilvers\\Container": "src"
         }
     }
 }
