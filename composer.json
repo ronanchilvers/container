@@ -1,0 +1,18 @@
+{
+    "name": "ronanchilvers/container",
+    "description": "A very simple, PSR-11 compatible container",
+    "type": "library",
+    "require": {
+        "psr/container": "^1.0"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Ronan Chilvers",
+            "email": "ronan@thelittledot.com"
+        }
+    ],
+    "autoload": {
+        "Ronanchilvers\\Container\\": "src"
+    }
+}
