@@ -1,8 +1,9 @@
 <?php
 
-namespace Ronanchilvers;
+namespace Ronanchilvers\Container;
 
 use Psr\Container\ContainerInterface;
+use Ronanchilvers\Container\NotFoundException;
 use Ronanchilvers\Container\Resolver\ResolverInterface;
 
 /**
@@ -42,19 +43,23 @@ class Container implements ContainerInterface
     {
         if ($this->has($id)) {
             $definition = $this->definitions[$id];
-            if (is_callable($definition)) {
-                $service = call_user_func($definition, $this);
-                $this->definitions[$id] = $service;
-
-                return $service;
-            }
-            if (!class_exists($definition)) {
-                $service = new $definition;
-                $this->definitions[$id] = $service;
-
-                return $service;
+            foreach ($this->resolvers as $resolver) {
+                if (!$resolver->supports($definition)) {
+                    continue;
+                }
+                $service = $resolver->resolve(
+                    $this,
+                    $definition
+                );
+                if (false !== $service) {
+                    return $service;
+                }
             }
         }
+
+        throw new NotFoundException(
+            sprintf('Service \'%s\' not found', $id)
+        );
     }
 
     /**

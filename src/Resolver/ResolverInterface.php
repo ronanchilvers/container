@@ -18,7 +18,7 @@ interface ResolverInterface
      * @return boolean
      * @author Ronan Chilvers <ronan@d3r.com>
      */
-    public function supports($definition) : boolean;
+    public function supports($definition);
 
     /**
      * Resolve a given definition
