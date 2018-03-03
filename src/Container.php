@@ -38,6 +38,11 @@ class Container implements
     /**
      * @var array
      */
+    protected $factories = [];
+
+    /**
+     * @var array
+     */
     protected $resolved = [];
 
     /**
@@ -73,11 +78,18 @@ class Container implements
      */
     public function get($id)
     {
+        // Resolved services are returned immediately
         if (isset($this->resolved[$id])) {
             return $this->resolved[$id];
         }
+        // Factories are checked next
+        if (isset($this->factories[$id])) {
+            $callable = $this->factories[$id];
+            return $callable($this);
+        }
+        // Resolve the service
         $definition = $id;
-        if ($this->has($id)) {
+        if (isset($this->definitions[$id])) {
             $definition = $this->definitions[$id];
         }
         foreach ($this->resolvers as &$resolver) {
@@ -109,7 +121,15 @@ class Container implements
      */
     public function has($id)
     {
+        if (isset($this->resolved[$id])) {
+            return true;
+        }
+
         if (isset($this->definitions[$id])) {
+            return true;
+        }
+
+        if (isset($this->factories[$id])) {
             return true;
         }
 
@@ -126,6 +146,18 @@ class Container implements
     public function set($id, $definition)
     {
         $this->definitions[$id] = $definition;
+    }
+
+    /**
+     * Create a factory service
+     *
+     * @param string $id
+     * @param mixed $callable
+     * @author Ronan Chilvers <ronan@d3r.com>
+     */
+    public function factory($id, $callable)
+    {
+        $this->factories[$id] = $callable;
     }
 
     /** START ArrayAccess compliance **/
