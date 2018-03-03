@@ -29,6 +29,10 @@ class AliasResolver implements ResolverInterface
     public function resolve(ContainerInterface $container, $definition)
     {
         $definition = substr($definition, 1);
-        return $container->get($definition);
+        if ($container->has($definition)) {
+            return $container->get($definition);
+        }
+
+        return false;
     }
 }

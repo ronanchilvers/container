@@ -36,6 +36,11 @@ class Container implements
     protected $definitions = [];
 
     /**
+     * @var array
+     */
+    protected $resolved = [];
+
+    /**
      * Class constructor
      *
      * @param array $values A set of container values to initialise the container with
@@ -68,22 +73,27 @@ class Container implements
      */
     public function get($id)
     {
+        if (isset($this->resolved[$id])) {
+            return $this->resolved[$id];
+        }
+        $definition = $id;
         if ($this->has($id)) {
             $definition = $this->definitions[$id];
-            foreach ($this->resolvers as &$resolver) {
-                if (is_string($resolver)) {
-                    $resolver = new $resolver;
-                }
-                if (!$resolver->supports($definition)) {
-                    continue;
-                }
-                $service = $resolver->resolve(
-                    $this,
-                    $definition
-                );
-                if (false !== $service) {
-                    return $service;
-                }
+        }
+        foreach ($this->resolvers as &$resolver) {
+            if (is_string($resolver)) {
+                $resolver = new $resolver;
+            }
+            if (!$resolver->supports($definition)) {
+                continue;
+            }
+            $service = $resolver->resolve(
+                $this,
+                $definition
+            );
+            if (false !== $service) {
+                $this->resolved[$id] = $service;
+                return $service;
             }
         }
 
