@@ -38,12 +38,12 @@ class Container implements
     /**
      * @var array
      */
-    protected $factories = [];
+    protected $resolved = [];
 
     /**
      * @var array
      */
-    protected $resolved = [];
+    protected $sharedKeys = [];
 
     /**
      * Class constructor
@@ -82,11 +82,6 @@ class Container implements
         if (isset($this->resolved[$id])) {
             return $this->resolved[$id];
         }
-        // Factories are checked next
-        if (isset($this->factories[$id])) {
-            $callable = $this->factories[$id];
-            return $callable($this);
-        }
         // Resolve the service
         $definition = $id;
         if (isset($this->definitions[$id])) {
@@ -104,7 +99,9 @@ class Container implements
                 $definition
             );
             if (false !== $service) {
-                $this->resolved[$id] = $service;
+                if (isset($this->shared[$id])) {
+                    $this->resolved[$id] = $service;
+                }
                 return $service;
             }
         }
@@ -129,10 +126,6 @@ class Container implements
             return true;
         }
 
-        if (isset($this->factories[$id])) {
-            return true;
-        }
-
         return false;
     }
 
@@ -145,19 +138,19 @@ class Container implements
      */
     public function set($id, $definition)
     {
-        $this->definitions[$id] = $definition;
+        $this->setDefinition($id, $definition, false);
     }
 
     /**
-     * Create a factory service
+     * Set a shared service definition in the container
      *
-     * @param string $id
-     * @param mixed $callable
+     * @param string $key
+     * @param mixed $definition
      * @author Ronan Chilvers <ronan@d3r.com>
      */
-    public function factory($id, $callable)
+    public function share($id, $definition)
     {
-        $this->factories[$id] = $callable;
+        $this->setDefinition($id, $definition, true);
     }
 
     /** START ArrayAccess compliance **/
@@ -186,4 +179,18 @@ class Container implements
 
     /** END ArrayAccess compliance **/
 
+    /**
+     * Set a definition in the container
+     *
+     * @param string $key
+     * @param mixed $definition
+     * @author Ronan Chilvers <ronan@d3r.com>
+     */
+    protected function setDefinition($id, $definition, $shared = false)
+    {
+        $this->definitions[$id] = $definition;
+        if (true === $shared) {
+            $this->shared[$id] = $id;
+        }
+    }
 }
