@@ -1,10 +1,11 @@
 <?php
 
-namespace RonanChilvers\Container\Test;
+namespace Ronanchilvers\Container\Test;
 
 use PHPUnit\Framework\TestCase;
 use Ronanchilvers\Container\Container;
 use Ronanchilvers\Container\NotFoundException;
+use Ronanchilvers\Container\Test\DummyWithDependency;
 use StdClass;
 
 /**
@@ -203,5 +204,84 @@ class ContainerTest extends TestCase
 
         $this->expectException(NotFoundException::class);
         $container->get('test2');
+    }
+
+    /**
+     * Test we can get a new instance of an existing class via autowiring
+     *
+     * @test
+     * @author Ronan Chilvers <ronan@d3r.com>
+     */
+    public function testAutowireNewInstanceOfClass()
+    {
+        $container = new Container;
+
+        $this->assertInstanceOf(Dummy::class, $container->get(Dummy::class));
+    }
+
+    /**
+     * Test autowiring with an unknown dependency
+     *
+     * @test
+     * @author Ronan Chilvers <ronan@d3r.com>
+     */
+    public function testAutowiringWithUnknownDependency()
+    {
+        $container = new Container;
+        $resolved = $container->get(DummyWithDependency::class);
+
+        $this->assertInstanceOf(DummyWithDependency::class, $resolved);
+        $this->assertInstanceOf(Dummy::class, $resolved->dependency);
+    }
+
+    /**
+     * Test autowiring with a known dependency
+     *
+     * @test
+     * @group current
+     * @author Ronan Chilvers <ronan@d3r.com>
+     */
+    public function testAutowiringWithKnownDependency()
+    {
+        $container = new Container;
+        $container->set(Dummy::class, function () {
+            $o = new Dummy;
+            $o->marker = 'known_value';
+
+            return $o;
+        });
+        $resolved = $container->get(DummyWithDependency::class);
+
+        $this->assertInstanceOf(DummyWithDependency::class, $resolved);
+        $this->assertInstanceOf(Dummy::class, $resolved->dependency);
+        $this->assertEquals('known_value', $resolved->dependency->marker);
+    }
+
+    /**
+     * Test autowiring a non-instantiable class
+     *
+     * @test
+     * @author Ronan Chilvers <ronan@d3r.com>
+     */
+    public function testAutowiringANonInstantiableClass()
+    {
+        $container = new Container;
+
+        $this->expectException(NotFoundException::class);
+        $container->get(DummyAbstract::class);
+    }
+
+    /**
+     * Test autowiring with non class dependencies
+     *
+     * @test
+     * @author Ronan Chilvers <ronan@d3r.com>
+     */
+    public function testAutowiringWithNonClassDependency()
+    {
+        $container = new Container;
+
+        $this->expectException(NotFoundException::class);
+        $container->get(DummyWithScalarDependency::class);
     }
 }
