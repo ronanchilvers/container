@@ -26,7 +26,7 @@ class AliasResolver implements ResolverInterface
      *
      * @author Ronan Chilvers <ronan@d3r.com>
      */
-    public function resolve(ContainerInterface $container, $definition)
+    public function resolve(ContainerInterface $container, $id, $definition)
     {
         $definition = substr($definition, 1);
         if ($container->has($definition)) {

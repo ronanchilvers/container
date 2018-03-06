@@ -27,8 +27,12 @@ class ReflectionResolver implements ResolverInterface
      *
      * @author Ronan Chilvers <ronan@d3r.com>
      */
-    public function resolve(ContainerInterface $container, $definition)
+    public function resolve(ContainerInterface $container, $id, $definition)
     {
+        if (is_null($definition)) {
+            $definition = $id;
+        }
+
         if (!is_string($definition) || !class_exists($definition)) {
             return false;
         }

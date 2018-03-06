@@ -16,9 +16,7 @@ use ArrayAccess;
  *
  * @author Ronan Chilvers <ronan@d3r.com>
  */
-class Container implements
-    ContainerInterface,
-    ArrayAccess
+class Container implements ContainerInterface
 {
     /**
      * @var Ronanchilvers\Container\Resolver\ResolverInterface[]
@@ -61,29 +59,16 @@ class Container implements
     }
 
     /**
-     * Register a resolver
-     *
-     * @param Ronanchilvers\Container\Resolver\ResolverInterface $resolver
-     * @author Ronan Chilvers <ronan@d3r.com>
-     */
-    public function registerResolver(ResolverInterface $resolver)
-    {
-        $this->resolvers[get_class($resolver)] = $resolver;
-    }
-
-    /**
      * {@inheritdoc}
      *
      * @author Ronan Chilvers <ronan@d3r.com>
      */
     public function get($id)
     {
-        // Resolved services are returned immediately
         if (isset($this->resolved[$id])) {
             return $this->resolved[$id];
         }
-        // Resolve the service
-        $definition = $id;
+        $definition = null;
         if (isset($this->definitions[$id])) {
             $definition = $this->definitions[$id];
         }
@@ -96,6 +81,7 @@ class Container implements
             }
             $service = $resolver->resolve(
                 $this,
+                $id,
                 $definition
             );
             if (false !== $service) {
@@ -152,32 +138,6 @@ class Container implements
     {
         $this->setDefinition($id, $definition, true);
     }
-
-    /** START ArrayAccess compliance **/
-
-    public function offsetExists($offset)
-    {
-        return isset($this->definitions[$offset]);
-    }
-
-    public function offsetGet($offset)
-    {
-        return $this->get($offset);
-    }
-
-    public function offsetSet($offset, $value)
-    {
-        return $this->set($offset, $value);
-    }
-
-    public function offsetUnset($offset)
-    {
-        if (isset($this->definitions[$offset])) {
-            unset($this->definitions[$offset]);
-        }
-    }
-
-    /** END ArrayAccess compliance **/
 
     /**
      * Set a definition in the container

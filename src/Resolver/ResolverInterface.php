@@ -24,9 +24,10 @@ interface ResolverInterface
      * Resolve a given definition
      *
      * @param Psr\Container\ContainerInterface $container
+     * @param string $id
      * @param mixed $definition
      * @return mixed
      * @author Ronan Chilvers <ronan@d3r.com>
      */
-    public function resolve(ContainerInterface $container, $definition);
+    public function resolve(ContainerInterface $container, $id, $definition);
 }

@@ -18,6 +18,9 @@ class PrimitiveResolver implements ResolverInterface
      */
     public function supports($definition)
     {
+        if (is_string($definition) && '@' == substr($definition, 0, 1)) {
+            return false;
+        }
         return is_scalar($definition) ||
                is_array($definition) ||
                (is_object($definition) && !is_callable($definition));
@@ -28,7 +31,7 @@ class PrimitiveResolver implements ResolverInterface
      *
      * @author Ronan Chilvers <ronan@d3r.com>
      */
-    public function resolve(ContainerInterface $container, $definition)
+    public function resolve(ContainerInterface $container, $id, $definition)
     {
         return $definition;
     }
