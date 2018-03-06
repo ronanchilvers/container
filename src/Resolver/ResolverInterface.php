@@ -14,19 +14,21 @@ interface ResolverInterface
     /**
      * Does this resolver support a given service definition?
      *
+     * @param string $id
      * @param mixed $definition
      * @return boolean
      * @author Ronan Chilvers <ronan@d3r.com>
      */
-    public function supports($definition);
+    public function supports($id, $definition);
 
     /**
      * Resolve a given definition
      *
      * @param Psr\Container\ContainerInterface $container
+     * @param string $id
      * @param mixed $definition
      * @return mixed
      * @author Ronan Chilvers <ronan@d3r.com>
      */
-    public function resolve(ContainerInterface $container, $definition);
+    public function resolve(ContainerInterface $container, $id, $definition);
 }

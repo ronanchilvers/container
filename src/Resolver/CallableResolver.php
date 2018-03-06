@@ -16,7 +16,7 @@ class CallableResolver implements ResolverInterface
      *
      * @author Ronan Chilvers <ronan@d3r.com>
      */
-    public function supports($definition)
+    public function supports($id, $definition)
     {
         return is_callable($definition);
     }
@@ -26,7 +26,7 @@ class CallableResolver implements ResolverInterface
      *
      * @author Ronan Chilvers <ronan@d3r.com>
      */
-    public function resolve(ContainerInterface $container, $definition)
+    public function resolve(ContainerInterface $container, $id, $definition)
     {
         return $definition($container);
     }

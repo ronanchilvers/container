@@ -17,8 +17,12 @@ class ReflectionResolver implements ResolverInterface
      *
      * @author Ronan Chilvers <ronan@d3r.com>
      */
-    public function supports($definition)
+    public function supports($id, $definition)
     {
+        if (is_null($definition)) {
+            $definition = $id;
+        }
+
         return is_string($definition) && class_exists($definition);
     }
 
@@ -27,10 +31,10 @@ class ReflectionResolver implements ResolverInterface
      *
      * @author Ronan Chilvers <ronan@d3r.com>
      */
-    public function resolve(ContainerInterface $container, $definition)
+    public function resolve(ContainerInterface $container, $id, $definition)
     {
-        if (!is_string($definition) || !class_exists($definition)) {
-            return false;
+        if (is_null($definition)) {
+            $definition = $id;
         }
 
         $reflection = new ReflectionClass($definition);
