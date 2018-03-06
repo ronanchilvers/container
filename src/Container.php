@@ -41,7 +41,7 @@ class Container implements ContainerInterface
     /**
      * @var array
      */
-    protected $sharedKeys = [];
+    protected $shared = [];
 
     /**
      * Class constructor
