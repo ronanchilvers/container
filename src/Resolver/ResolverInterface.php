@@ -24,7 +24,7 @@ interface ResolverInterface
     /**
      * Resolve a given definition
      *
-     * @param Psr\Container\ContainerInterface $container
+     * @param \Psr\Container\ContainerInterface $container
      * @param string $id
      * @param mixed $definition
      * @return mixed
