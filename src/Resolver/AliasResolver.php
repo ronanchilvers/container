@@ -16,7 +16,7 @@ class AliasResolver implements ResolverInterface
      *
      * @author Ronan Chilvers <ronan@d3r.com>
      */
-    public function supports($definition)
+    public function supports($id, $definition)
     {
         return is_string($definition) && '@' == substr($definition, 0, 1);
     }

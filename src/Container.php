@@ -76,7 +76,7 @@ class Container implements ContainerInterface
             if (is_string($resolver)) {
                 $resolver = new $resolver;
             }
-            if (!$resolver->supports($definition)) {
+            if (!$resolver->supports($id, $definition)) {
                 continue;
             }
             $service = $resolver->resolve(
