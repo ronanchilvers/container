@@ -72,6 +72,19 @@ class ContainerTest extends TestCase
     }
 
     /**
+     * Test has for a class name that's not a service
+     *
+     * @test
+     * @author Ronan Chilvers <ronan@d3r.com>
+     */
+    public function testHasForValidClassName()
+    {
+        $container = new Container;
+
+        $this->assertTrue($container->has(Dummy::class));
+    }
+
+    /**
      * Provider for primitives
      *
      * @author Ronan Chilvers <ronan@d3r.com>

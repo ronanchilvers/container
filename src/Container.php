@@ -112,6 +112,11 @@ class Container implements ContainerInterface
             return true;
         }
 
+        // How can this be moved to the ReflectionResolver?
+        if (class_exists($id)) {
+            return true;
+        }
+
         return false;
     }
 
