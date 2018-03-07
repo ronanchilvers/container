@@ -1,7 +1,6 @@
 # container
 
 [![Build Status](https://travis-ci.org/ronanchilvers/container.svg?branch=master)](https://travis-ci.org/ronanchilvers/container)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/ronanchilvers/container/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/ronanchilvers/container/?branch=master)
 [![Code Coverage](https://scrutinizer-ci.com/g/ronanchilvers/container/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/ronanchilvers/container/?branch=master)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
 
