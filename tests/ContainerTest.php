@@ -297,4 +297,36 @@ class ContainerTest extends TestCase
         $this->expectException(NotFoundException::class);
         $container->get(DummyWithScalarDependency::class);
     }
+
+    /**
+     * Test that adding a service provider registers keys correctly
+     *
+     * @test
+     * @author Ronan Chilvers <ronan@d3r.com>
+     */
+    public function testServiceProvidersCanAddKeys()
+    {
+        $container = new Container;
+        $container->register(new DummyServiceProvider([
+            'foo' => 'bar'
+        ]));
+
+        $this->assertEquals('bar', $container->get('foo'));
+    }
+
+    /**
+     * Test that settings passed when registering a service provider are set
+     *
+     * @test
+     * @author Ronan Chilvers <ronan@d3r.com>
+     */
+    public function testSettingsAddedWhenRegisteringProviders()
+    {
+        $container = new Container;
+        $container->register(new DummyServiceProvider(),[
+            'foo' => 'bar'
+        ]);
+
+        $this->assertEquals('bar', $container->get('foo'));
+    }
 }
