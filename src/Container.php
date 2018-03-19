@@ -59,6 +59,23 @@ class Container implements ContainerInterface
     }
 
     /**
+     * Register a service provider, a la Pimple
+     *
+     * @param Ronanchilvers\Container\ServiceProviderInterface
+     * @return $this
+     * @author Ronan Chilvers <ronan@d3r.com>
+     */
+    public function register(ServiceProviderInterface $provider, $settings = [])
+    {
+        $provider->register($this);
+        foreach ($settings as $key => $value) {
+            $this->set($key, $value);
+        }
+
+        return $this;
+    }
+
+    /**
      * {@inheritdoc}
      *
      * @author Ronan Chilvers <ronan@d3r.com>
