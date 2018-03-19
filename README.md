@@ -118,6 +118,30 @@ $service = $container->get(MyService::class);
 
 The injected objects do not have to be registered with the container to be injected. If the container encounters a dependency that is not defined as a service it will attempt to create a new instance with no constructor parameters.
 
+### Service Providers
+
+The container supports pimple style service providers. Your provider must implement ```Ronanchilvers\Container\ServiceProviderInterface```.
+
+```php
+class ServiceProvider implements ServiceProviderInterface
+{
+    /**
+     * @author Ronan Chilvers <ronan@d3r.com>
+     */
+    public function register(Container $container)
+    {
+        $container->set('my_service', function () {
+            return new StdClass;
+        });
+    }
+}
+
+$container = new Container;
+$container->register(new ServiceProvider);
+
+$myService = $container->get('my_service');
+```
+
 ## Testing
 
 The container is quite simple and has 100% test coverage. You can run the tests by doing:
