@@ -36,6 +36,11 @@ class Container implements ContainerInterface
     /**
      * @var array
      */
+    protected $extensions = [];
+
+    /**
+     * @var array
+     */
     protected $resolved = [];
 
     /**
@@ -102,6 +107,11 @@ class Container implements ContainerInterface
                 $definition
             );
             if (false !== $service) {
+                if (isset($this->extensions[$id]) && is_array($this->extensions[$id])) {
+                    foreach ($this->extensions[$id] as $extension) {
+                        $service = $extension($service, $this);
+                    }
+                }
                 if (isset($this->shared[$id])) {
                     $this->resolved[$id] = $service;
                 }
@@ -159,6 +169,21 @@ class Container implements ContainerInterface
     public function share($id, $definition)
     {
         $this->setDefinition($id, $definition, true);
+    }
+
+    /**
+     * Extend a service
+     *
+     * @param string $id
+     * @param mixed $definition
+     * @author Ronan Chilvers <ronan@d3r.com>
+     */
+    public function extend($id, $definition)
+    {
+        if (!isset($this->extensions[$id])) {
+            $this->extensions = [];
+        }
+        $this->extensions[$id][] = $definition;
     }
 
     /**

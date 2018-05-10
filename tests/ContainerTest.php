@@ -329,4 +329,63 @@ class ContainerTest extends TestCase
 
         $this->assertEquals('bar', $container->get('foo'));
     }
+
+    /**
+     * Test that the container allows extension of a factory service
+     *
+     * @test
+     * @author Ronan Chilvers <ronan@d3r.com>
+     */
+    public function testContainerAllowsExtensionOfFactoryService()
+    {
+        $container = new Container;
+        $container->set('my_service', function () {
+            $o = new StdClass;
+            $o->marker = 0;
+
+            return $o;
+        });
+        $container->extend('my_service', function ($s, $c) {
+            static $counter = 0;
+            $s->marker = ++$counter;
+
+            return $s;
+        });
+
+        $service = $container->get('my_service');
+        $this->assertEquals(1, $service->marker);
+
+        $service = $container->get('my_service');
+        $this->assertEquals(2, $service->marker);
+    }
+
+    /**
+     * Test that the container allows extension of shared services
+     *
+     * @group current
+     * @test
+     * @author Ronan Chilvers <ronan@d3r.com>
+     */
+    public function testContainerAllowsExtensionOfSharedService()
+    {
+        $container = new Container;
+        $container->share('my_service', function () {
+            $o = new StdClass;
+            $o->marker = 0;
+
+            return $o;
+        });
+        $container->extend('my_service', function ($s, $c) {
+            static $counter = 0;
+            $s->marker = ++$counter;
+
+            return $s;
+        });
+
+        $service = $container->get('my_service');
+        $this->assertEquals(1, $service->marker);
+
+        $service = $container->get('my_service');
+        $this->assertEquals(1, $service->marker);
+    }
 }

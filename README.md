@@ -81,6 +81,24 @@ $logger = $container->get('logger');
 $logger = $container->get('Psr\Log\LoggerInterface');
 ```
 
+### Extending services
+
+The container allows services to be extended (just like Pimple) using the `extend()` method. You can extend both factory and shared services. Call `extend()` with the service id and a callable. The callable will recieve the service instance as its first argument and the container as the second. You can extend a service as many times as you like.
+
+```php
+$container = new Container;
+$container->share('my_service', function () {
+    return new \My\Service;
+});
+$container->extend('my_service', function ($s, $c) {
+    $s->registerWidget(new Widget);
+
+    return $s;
+});
+
+$service = $container->get('my_service');
+```
+
 ### Autowiring
 
 The container supports basic autowiring. This means that you can supply a fully qualified class name as a service definition and the container will attempt to instantiate it for you.
