@@ -181,7 +181,7 @@ class Container implements ContainerInterface
     public function extend($id, $definition)
     {
         if (!isset($this->extensions[$id])) {
-            $this->extensions = [];
+            $this->extensions[$id] = [];
         }
         $this->extensions[$id][] = $definition;
     }
