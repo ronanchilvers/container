@@ -4,7 +4,7 @@
 [![codecov](https://codecov.io/gh/ronanchilvers/container/branch/master/graph/badge.svg)](https://codecov.io/gh/ronanchilvers/container)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
 
-A simple, small container for PHP 7+. It has the following features:
+A simple, small [PSR-11](https://www.php-fig.org/psr/psr-11/) compliant container for PHP 7+. It has the following features:
 
 * Factory and shared definitions
 * Support for non object services (ie: storing key values)
