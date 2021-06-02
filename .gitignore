@@ -3,3 +3,4 @@
 *.sublime-*
 phpunit.xml
 composer.lock
+.phpunit.*
