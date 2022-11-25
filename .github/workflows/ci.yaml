@@ -53,4 +53,4 @@ jobs:
       if: matrix.php-versions == '8.0'
       run: |
         composer global require scrutinizer/ocular
-        vendor/bin/ocular code-coverage:upload --format=php-clover build/clover.xml
+        ~/.composer/vendor/bin/ocular code-coverage:upload --format=php-clover build/clover.xml
