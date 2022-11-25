@@ -51,4 +51,6 @@ jobs:
       run: vendor/bin/phpunit -c phpunit.xml.dist --coverage-clover build/clover.xml
     - name: Upload coverage data
       if: matrix.php-versions == '8.0'
-      run: vendor/bin/ocular code-coverage:upload --format=php-clover build/clover.xml
+      run: |
+        composer global require scrutinizer/ocular
+        vendor/bin/ocular code-coverage:upload --format=php-clover build/clover.xml
