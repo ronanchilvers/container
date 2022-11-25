@@ -52,5 +52,5 @@ jobs:
     - name: Upload coverage data
       if: matrix.php-versions == '8.0'
       run: |
-        wget https://scrutinizer-ci.com/ocular.phar
-        php ocular.phar code-coverage:upload --format=php-clover build/clover.xml
+        composer global require scrutinizer/ocular
+        php ~/.composer/vendor/bin/ocular code-coverage:upload --format=php-clover build/clover.xml
