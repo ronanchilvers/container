@@ -3,7 +3,7 @@
     "description": "A very simple, PSR-11 compatible container",
     "type": "library",
     "require": {
-        "php": "^7.3||^8.0",
+        "php": "^8.0",
         "psr/container": "^1.0"
     },
     "require-dev": {
